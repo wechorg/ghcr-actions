@@ -28,9 +28,16 @@ jobs:
       # Runs a single command using the runners shell
       - name: Fake Run
         run: echo Hello, world!
+        
+      - name: Docker Login with PAT
+        env:
+          GHCR_PAT: ${{ secrets.PAT }}
+        run: |
+          echo $GHCR_PAT | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          docker pull ghcr.io/wechorg/gs:1.0.0
 
       # Runs a set of commands using the runners shell
-      - name: Docker Login
+      - name: Docker Login with GITHUB_TOKEN
         env:
           GHCR_PAT: ${{ secrets.GITHUB_TOKEN }}
         run: |
